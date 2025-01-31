@@ -7,4 +7,4 @@ class Config:
     JWT_SECRET_KEY = 'your_jwt_secret_key'
     SECRET_KEY = 'your_secret_key'
 
-    ALLOWED_ORIGINS = ['localhost:3000']
+    ALLOWED_ORIGINS = ['localhost:3000', 'https://bodaboda-81alju6bc-hamaxwels-projects.vercel.app/']
