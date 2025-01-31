@@ -1,107 +1,178 @@
-// src/pages/IncomeExpensePage.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Table, Button, Form } from 'react-bootstrap';
 
 const IncomeExpensePage = () => {
-  const [income, setIncome] = useState({ amount: '', date: '', source: '' });
-  const [expense, setExpense] = useState({ amount: '', date: '', category: '' });
+    const [incomes, setIncomes] = useState([]);
+    const [expenses, setExpenses] = useState([]);
+    const [formData, setFormData] = useState({ amount: '', date: '', category: '', source: '' });
 
-  const handleIncomeChange = (e) => {
-    const { name, value } = e.target;
-    setIncome({ ...income, [name]: value });
-  };
+    const token = localStorage.getItem('access_token');
+    
+    useEffect(() => {
+        fetchIncome();
+        fetchExpenses();
+    }, []);
 
-  const handleExpenseChange = (e) => {
-    const { name, value } = e.target;
-    setExpense({ ...expense, [name]: value });
-  };
+    // Fetch all incomes
+    const fetchIncome = async () => {
+        try {
+            const response = await axios.get('http://127.0.0.1:5000/income/all', { 
+                headers: { Authorization: `Bearer ${token}` } 
+            });
+            setIncomes(response.data);
+        } catch (error) {
+            console.error("Error fetching incomes:", error);
+        }
+    };
 
-  const handleIncomeSubmit = (e) => {
-    e.preventDefault();
-    alert("Income added!");
-  };
+    // Fetch all expenses
+    const fetchExpenses = async () => {
+        try {
+            const response = await axios.get('http://127.0.0.1:5000/expense/all', { 
+                headers: { Authorization: `Bearer ${token}` } 
+            });
+            setExpenses(response.data);
+        } catch (error) {
+            console.error("Error fetching expenses:", error);
+        }
+    };
 
-  const handleExpenseSubmit = (e) => {
-    e.preventDefault();
-    alert("Expense added!");
-  };
+    // Handle adding income
+    const handleAddIncome = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.post('http://127.0.0.1:5000/income/add', formData, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            fetchIncome(); // Refresh income list after adding
+        } catch (error) {
+            console.error("Error adding income:", error);
+        }
+    };
 
-  return (
-    <div className="container mt-4">
-      <h2 className="text-center">Track Income & Expenses</h2>
+    // Handle adding expense
+    const handleAddExpense = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.post('http://127.0.0.1:5000/expense/add', formData, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            fetchExpenses(); // Refresh expense list after adding
+        } catch (error) {
+            console.error("Error adding expense:", error);
+        }
+    };
 
-      <h3>Add Income</h3>
-      <form onSubmit={handleIncomeSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Amount</label>
-          <input
-            type="number"
-            className="form-control"
-            name="amount"
-            value={income.amount}
-            onChange={handleIncomeChange}
-          />
+    return (
+        <div className="container mt-4">
+            <h2>Income & Expenses</h2>
+
+            {/* Add Income Form */}
+            <Form onSubmit={handleAddIncome}>
+                <Form.Group>
+                    <Form.Label>Amount</Form.Label>
+                    <Form.Control 
+                        type="number" 
+                        value={formData.amount} 
+                        onChange={(e) => setFormData({ ...formData, amount: e.target.value })} 
+                        required 
+                    />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Date</Form.Label>
+                    <Form.Control 
+                        type="date" 
+                        value={formData.date} 
+                        onChange={(e) => setFormData({ ...formData, date: e.target.value })} 
+                        required 
+                    />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Source</Form.Label>
+                    <Form.Control 
+                        type="text" 
+                        value={formData.source} 
+                        onChange={(e) => setFormData({ ...formData, source: e.target.value })} 
+                        required 
+                    />
+                </Form.Group>
+                <Button type="submit" className="mt-2">Add Income</Button>
+            </Form>
+
+            {/* Display Incomes */}
+            <Table striped bordered hover className="mt-4">
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Source</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {incomes.map((income, index) => (
+                        <tr key={index}>
+                            <td>{income.amount}</td>
+                            <td>{income.date}</td>
+                            <td>{income.source}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+
+            {/* Add Expense Form */}
+            <Form onSubmit={handleAddExpense} className="mt-4">
+                <Form.Group>
+                    <Form.Label>Amount</Form.Label>
+                    <Form.Control 
+                        type="number" 
+                        value={formData.amount} 
+                        onChange={(e) => setFormData({ ...formData, amount: e.target.value })} 
+                        required 
+                    />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Category</Form.Label>
+                    <Form.Control 
+                        type="text" 
+                        value={formData.category} 
+                        onChange={(e) => setFormData({ ...formData, category: e.target.value })} 
+                        required 
+                    />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Date</Form.Label>
+                    <Form.Control 
+                        type="date" 
+                        value={formData.date} 
+                        onChange={(e) => setFormData({ ...formData, date: e.target.value })} 
+                        required 
+                    />
+                </Form.Group>
+                <Button type="submit" className="mt-2">Add Expense</Button>
+            </Form>
+
+            {/* Display Expenses */}
+            <Table striped bordered hover className="mt-4">
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {expenses.map((expense, index) => (
+                        <tr key={index}>
+                            <td>{expense.amount}</td>
+                            <td>{expense.date}</td>
+                            <td>{expense.category}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
         </div>
-        <div className="mb-3">
-          <label className="form-label">Date</label>
-          <input
-            type="date"
-            className="form-control"
-            name="date"
-            value={income.date}
-            onChange={handleIncomeChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Source</label>
-          <input
-            type="text"
-            className="form-control"
-            name="source"
-            value={income.source}
-            onChange={handleIncomeChange}
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">Add Income</button>
-      </form>
-
-      <hr />
-
-      <h3>Add Expense</h3>
-      <form onSubmit={handleExpenseSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Amount</label>
-          <input
-            type="number"
-            className="form-control"
-            name="amount"
-            value={expense.amount}
-            onChange={handleExpenseChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Date</label>
-          <input
-            type="date"
-            className="form-control"
-            name="date"
-            value={expense.date}
-            onChange={handleExpenseChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Category</label>
-          <input
-            type="text"
-            className="form-control"
-            name="category"
-            value={expense.category}
-            onChange={handleExpenseChange}
-          />
-        </div>
-        <button type="submit" className="btn btn-danger">Add Expense</button>
-      </form>
-    </div>
-  );
+    );
 };
 
 export default IncomeExpensePage;

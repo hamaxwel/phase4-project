@@ -1,67 +1,75 @@
-// src/pages/SavingGoalPage.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const SavingGoalPage = () => {
-  const [goal, setGoal] = useState({ name: '', targetAmount: '', currentSavings: '', dueDate: '' });
+    const [goals, setGoals] = useState([]);
+    const [goalData, setGoalData] = useState({ goal_name: '', target_amount: '', due_date: '' });
+    const [token, setToken] = useState(localStorage.getItem('access_token'));
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setGoal({ ...goal, [name]: value });
-  };
+    useEffect(() => {
+        if (token) {
+            // Fetch all saving goals using the correct endpoint
+            axios.get('http://127.0.0.1:5000/saving_goal/all', { headers: { Authorization: `Bearer ${token}` } })
+                .then(res => setGoals(res.data))
+                .catch(err => console.log(err));
+        }
+    }, [token]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("Savings goal set!");
-  };
+    const handleGoalSubmit = (e) => {
+        e.preventDefault();
+        // Send new saving goal to the backend using the correct endpoint
+        axios.post('http://127.0.0.1:5000/saving_goal/add', goalData, { headers: { Authorization: `Bearer ${token}` } })
+            .then(() => {
+                // Clear the form and re-fetch goals
+                setGoalData({ goal_name: '', target_amount: '', due_date: '' });
+                axios.get('http://127.0.0.1:5000/saving_goal/all', { headers: { Authorization: `Bearer ${token}` } })
+                    .then(res => setGoals(res.data))
+                    .catch(err => console.log(err));
+            })
+            .catch(err => console.log(err));
+    };
 
-  return (
-    <div className="container mt-4">
-      <h2 className="text-center">Set Savings Goal</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Goal Name</label>
-          <input
-            type="text"
-            className="form-control"
-            name="name"
-            value={goal.name}
-            onChange={handleChange}
-          />
+    return (
+        <div className="container mt-5">
+            <h3>Savings Goals</h3>
+            <form onSubmit={handleGoalSubmit}>
+                <input
+                    type="text"
+                    className="form-control mb-2"
+                    placeholder="Goal Name"
+                    value={goalData.goal_name}
+                    onChange={(e) => setGoalData({ ...goalData, goal_name: e.target.value })}
+                    required
+                />
+                <input
+                    type="number"
+                    className="form-control mb-2"
+                    placeholder="Target Amount"
+                    value={goalData.target_amount}
+                    onChange={(e) => setGoalData({ ...goalData, target_amount: e.target.value })}
+                    required
+                />
+                <input
+                    type="date"
+                    className="form-control mb-2"
+                    value={goalData.due_date}
+                    onChange={(e) => setGoalData({ ...goalData, due_date: e.target.value })}
+                    required
+                />
+                <button type="submit" className="btn btn-primary">Add Saving Goal</button>
+            </form>
+            <div className="mt-5">
+                <h4>Your Saving Goals</h4>
+                <ul className="list-group">
+                    {goals.map((goal, index) => (
+                        <li key={index} className="list-group-item">
+                            {goal.goal_name} | {goal.target_amount} | {goal.due_date}
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
-        <div className="mb-3">
-          <label className="form-label">Target Amount</label>
-          <input
-            type="number"
-            className="form-control"
-            name="targetAmount"
-            value={goal.targetAmount}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Current Savings</label>
-          <input
-            type="number"
-            className="form-control"
-            name="currentSavings"
-            value={goal.currentSavings}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Due Date</label>
-          <input
-            type="date"
-            className="form-control"
-            name="dueDate"
-            value={goal.dueDate}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit" className="btn btn-success">Set Goal</button>
-      </form>
-    </div>
-  );
+    );   
 };
 
 export default SavingGoalPage;

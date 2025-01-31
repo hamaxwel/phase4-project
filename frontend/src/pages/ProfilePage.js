@@ -1,59 +1,30 @@
-// src/pages/ProfilePage.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const ProfilePage = () => {
-  const [profileData, setProfileData] = useState({
-    name: "John Doe",
-    phone: "123456789",
-    email: "john@example.com"
-  });
+    const [profile, setProfile] = useState({});
+    const [token, setToken] = useState(localStorage.getItem('access_token'));
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProfileData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
+    useEffect(() => {
+        if (token) {
+            axios.get('/user/profile', { headers: { Authorization: `Bearer ${token}` } })
+                .then(res => setProfile(res.data))
+                .catch(err => console.log(err));
+        }
+    }, [token]);
 
-  return (
-    <div className="container mt-4">
-      <h2 className="text-center">Your Profile</h2>
-      <form>
-        <div className="mb-3">
-          <label className="form-label">Full Name</label>
-          <input
-            type="text"
-            className="form-control"
-            name="name"
-            value={profileData.name}
-            onChange={handleChange}
-          />
+    return (
+        <div className="container mt-5">
+            <h3>Profile Page</h3>
+            <div className="card">
+                <div className="card-body">
+                    <h5 className="card-title">{profile.full_name}</h5>
+                    <p className="card-text">Email: {profile.email}</p>
+                    <p className="card-text">Phone Number: {profile.phone_number}</p>
+                </div>
+            </div>
         </div>
-        <div className="mb-3">
-          <label className="form-label">Phone Number</label>
-          <input
-            type="text"
-            className="form-control"
-            name="phone"
-            value={profileData.phone}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Email Address</label>
-          <input
-            type="email"
-            className="form-control"
-            name="email"
-            value={profileData.email}
-            onChange={handleChange}
-          />
-        </div>
-        <button className="btn btn-primary">Save Changes</button>
-      </form>
-    </div>
-  );
+    );
 };
 
 export default ProfilePage;

@@ -8,11 +8,12 @@ import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
 import IncomeExpensePage from './pages/IncomeExpensePage';
 import SavingGoalPage from './pages/SavingGoalPage';
-import WithdrawalReportPage from './pages/WithdrawalReportPage';
+import WithdrawalPage from './pages/WithdrawalPage';
 import RemindersPage from './pages/RemindersPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import DashboardPage from './pages/DashboardPage';  // Import DashboardPage
+import DashboardPage from './pages/DashboardPage';  
+
 
 const App = () => {
   return (
@@ -24,11 +25,12 @@ const App = () => {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/income-expense" element={<IncomeExpensePage />} />
           <Route path="/goal" element={<SavingGoalPage />} />
-          <Route path="/withdraw-reports" element={<WithdrawalReportPage />} />
+          <Route path="/withdraw" element={<WithdrawalPage />} />
           <Route path="/reminders" element={<RemindersPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} /> {/* Added Dashboard Route */}
+          <Route path="/dashboard" element={<DashboardPage />} /> 
+          <Route path="/saving-goal" element={<SavingGoalPage />} />
         </Routes>
       </div>
       <Footer />

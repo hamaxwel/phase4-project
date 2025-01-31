@@ -1,29 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 const HomePage = () => {
-  const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    fetch('http://127.0.0.1:5000/api/test')
-      .then(response => response.json())
-      .then(data => setMessage(data.message))
-      .catch(error => console.error("Error fetching data:", error));
-  }, []);
-
   return (
     <div className="container mt-5">
       <div className="row align-items-center">
-        <div className="col-md-6 text-center text-md-left">
+        <div className="col-12 col-md-6 text-center text-md-left mb-4 mb-md-0">
           <h1 className="display-4 text-primary font-weight-bold mb-4">Welcome to the Boda-Boda Riders Savings App</h1>
           <p className="lead text-secondary mb-4" style={{ fontSize: '1.2rem' }}>
             Managing your finances just got easier. With our app, you can track your earnings, expenses, and set savings goals, all in one place.
           </p>
-          <p className="lead font-weight-bold text-success">Backend Message: {message}</p>
           <Link to="/register" className="btn btn-success btn-lg mt-3">Get Started</Link>
         </div>
 
-        <div className="col-md-6 text-center">
+        <div className="col-12 col-md-6 text-center">
           <img 
             src={`${process.env.PUBLIC_URL}/boda.jpg`} 
             alt="Boda-Boda Riders" 
