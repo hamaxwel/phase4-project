@@ -17,7 +17,7 @@ const IncomeExpensePage = () => {
     // Fetch all incomes
     const fetchIncome = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:5000/income/all', { 
+            const response = await axios.get('https://phase4-project-1twb.onrender.com/income/all', { 
                 headers: { Authorization: `Bearer ${token}` } 
             });
             setIncomes(response.data);
@@ -29,7 +29,7 @@ const IncomeExpensePage = () => {
     // Fetch all expenses
     const fetchExpenses = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:5000/expense/all', { 
+            const response = await axios.get('https://phase4-project-1twb.onrender.com/expense/all', { 
                 headers: { Authorization: `Bearer ${token}` } 
             });
             setExpenses(response.data);
@@ -42,7 +42,7 @@ const IncomeExpensePage = () => {
     const handleAddIncome = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://127.0.0.1:5000/income/add', formData, {
+            await axios.post('https://phase4-project-1twb.onrender.com/income/add', formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             fetchIncome(); // Refresh income list after adding
@@ -55,7 +55,7 @@ const IncomeExpensePage = () => {
     const handleAddExpense = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://127.0.0.1:5000/expense/add', formData, {
+            await axios.post('https://phase4-project-1twb.onrender.com/expense/add', formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             fetchExpenses(); // Refresh expense list after adding

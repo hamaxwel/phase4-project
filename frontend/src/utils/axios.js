@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://127.0.0.1:5000'; 
+const API_BASE_URL = 'https://phase4-project-1twb.onrender.com'; 
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,

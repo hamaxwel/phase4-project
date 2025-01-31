@@ -9,7 +9,7 @@ const WithdrawalPage = () => {
     useEffect(() => {
         if (token) {
             // Fetch all withdrawal history using the correct endpoint
-            axios.get('http://127.0.0.1:5000/withdrawal/all', { headers: { Authorization: `Bearer ${token}` } })
+            axios.get('https://phase4-project-1twb.onrender.com/withdrawal/all', { headers: { Authorization: `Bearer ${token}` } })
                 .then(res => setWithdrawals(res.data))
                 .catch(err => console.log(err));
         }
@@ -18,11 +18,11 @@ const WithdrawalPage = () => {
     const handleWithdrawalSubmit = (e) => {
         e.preventDefault();
         // Post a new withdrawal request to the correct endpoint
-        axios.post('http://127.0.0.1:5000/withdrawal/add', withdrawalData, { headers: { Authorization: `Bearer ${token}` } })
+        axios.post('https://phase4-project-1twb.onrender.com/withdrawal/add', withdrawalData, { headers: { Authorization: `Bearer ${token}` } })
             .then(() => {
                 // Clear the form and re-fetch withdrawals
                 setWithdrawalData({ amount: '', withdrawal_date: '', reason: '' });
-                axios.get('http://127.0.0.1:5000/withdrawal/all', { headers: { Authorization: `Bearer ${token}` } })
+                axios.get('https://phase4-project-1twb.onrender.com/withdrawal/all', { headers: { Authorization: `Bearer ${token}` } })
                     .then(res => setWithdrawals(res.data))
                     .catch(err => console.log(err));
             })

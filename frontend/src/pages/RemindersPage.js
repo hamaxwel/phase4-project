@@ -9,7 +9,7 @@ const RemindersPage = () => {
     useEffect(() => {
         if (token) {
             // Fetch all reminders using the correct API endpoint
-            axios.get('http://127.0.0.1:5000/reminder/all', { headers: { Authorization: `Bearer ${token}` } })
+            axios.get('https://phase4-project-1twb.onrender.com/reminder/all', { headers: { Authorization: `Bearer ${token}` } })
                 .then(res => setReminders(res.data))
                 .catch(err => console.log(err));
         }
@@ -18,11 +18,11 @@ const RemindersPage = () => {
     const handleReminderSubmit = (e) => {
         e.preventDefault();
         // Post a new reminder using the correct API endpoint
-        axios.post('http://127.0.0.1:5000/reminder/add', reminderData, { headers: { Authorization: `Bearer ${token}` } })
+        axios.post('https://phase4-project-1twb.onrender.com/reminder/add', reminderData, { headers: { Authorization: `Bearer ${token}` } })
             .then(() => {
                 // Clear form data and re-fetch reminders
                 setReminderData({ goal_name: '', reminder_date: '' });
-                axios.get('http://127.0.0.1:5000/reminder/all', { headers: { Authorization: `Bearer ${token}` } })
+                axios.get('https://phase4-project-1twb.onrender.com/reminder/all', { headers: { Authorization: `Bearer ${token}` } })
                     .then(res => setReminders(res.data))
                     .catch(err => console.log(err));
             })

@@ -13,7 +13,7 @@ const LoginPage = () => {
         e.preventDefault();
         
         // POST request to backend login API endpoint
-        axios.post('http://127.0.0.1:5000/auth/login', formData)
+        axios.post('https://phase4-project-1twb.onrender.com/auth/login', formData)
             .then((response) => {
                 // Save the access token to localStorage and navigate to the dashboard
                 localStorage.setItem('access_token', response.data.access_token);

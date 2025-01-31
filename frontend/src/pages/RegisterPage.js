@@ -12,7 +12,7 @@ const RegisterPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        axios.post('http://127.0.0.1:5000/auth/register', formData)
+        axios.post('https://phase4-project-1twb.onrender.com/auth/register', formData)
             .then((response) => {
                 navigate('/login');
             })

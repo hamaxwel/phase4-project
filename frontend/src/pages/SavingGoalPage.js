@@ -9,7 +9,7 @@ const SavingGoalPage = () => {
     useEffect(() => {
         if (token) {
             // Fetch all saving goals using the correct endpoint
-            axios.get('http://127.0.0.1:5000/saving_goal/all', { headers: { Authorization: `Bearer ${token}` } })
+            axios.get('https://phase4-project-1twb.onrender.com/saving_goal/all', { headers: { Authorization: `Bearer ${token}` } })
                 .then(res => setGoals(res.data))
                 .catch(err => console.log(err));
         }
@@ -18,11 +18,11 @@ const SavingGoalPage = () => {
     const handleGoalSubmit = (e) => {
         e.preventDefault();
         // Send new saving goal to the backend using the correct endpoint
-        axios.post('http://127.0.0.1:5000/saving_goal/add', goalData, { headers: { Authorization: `Bearer ${token}` } })
+        axios.post('https://phase4-project-1twb.onrender.com/saving_goal/add', goalData, { headers: { Authorization: `Bearer ${token}` } })
             .then(() => {
                 // Clear the form and re-fetch goals
                 setGoalData({ goal_name: '', target_amount: '', due_date: '' });
-                axios.get('http://127.0.0.1:5000/saving_goal/all', { headers: { Authorization: `Bearer ${token}` } })
+                axios.get('https://phase4-project-1twb.onrender.com/saving_goal/all', { headers: { Authorization: `Bearer ${token}` } })
                     .then(res => setGoals(res.data))
                     .catch(err => console.log(err));
             })

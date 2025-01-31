@@ -13,12 +13,12 @@ const DashboardPage = () => {
     useEffect(() => {
         if (token) {
             // Fetch user profile
-            axios.get('http://127.0.0.1:5000/user/profile', { headers: { Authorization: `Bearer ${token}` } })
+            axios.get('https://phase4-project-1twb.onrender.com/profile', { headers: { Authorization: `Bearer ${token}` } })
                 .then(res => setProfile(res.data))
                 .catch(err => console.log(err));
 
             // Fetch user financial data (income, expenses, savings)
-            axios.get('http://127.0.0.1:5000/financial/overview', { headers: { Authorization: `Bearer ${token}` } })
+            axios.get('https://phase4-project-1twb.onrender.com/financial/overview', { headers: { Authorization: `Bearer ${token}` } })
                 .then(res => {
                     setIncome(res.data.total_income);
                     setExpenses(res.data.total_expenses);
@@ -57,7 +57,7 @@ const DashboardPage = () => {
 
         if (confirmDelete) {
             // Make DELETE request to the backend to delete the user's account
-            axios.delete('http://127.0.0.1:5000/user/delete', { 
+            axios.delete('https://phase4-project-1twb.onrender.com/user/delete', { 
                 headers: { Authorization: `Bearer ${token}` }
             })
             .then(res => {
