@@ -6,3 +6,5 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_SECRET_KEY = 'your_jwt_secret_key'
     SECRET_KEY = 'your_secret_key'
+
+    ALLOWED_ORIGINS = ['localhost:3000']
