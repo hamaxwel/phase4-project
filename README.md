@@ -54,8 +54,8 @@ npm start
 
 1. Navigate into the backend directory:
    ```bash
-cd backend
-```
+    cd backend
+  ```
 2. Install the necessary Python packages:
    ```bash
 pip install -r requirements.txt
