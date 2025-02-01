@@ -22,11 +22,12 @@ def create_app():
     # App Config
     app.config.from_object(Config)
 
-    CORS(app, resources={
-        r"/*": {
-            "origins": app.config['ALLOWED_ORIGINS']
-            }
-    })
+    
+    # Enable CORS for all routes
+    CORS(app, origins=["*"])  
+
+    # OR to restrict to your frontend domain (more secure)
+    # CORS(app, origins=["https://your-frontend.vercel.app"])
 
     # Initialize extensions
     db.init_app(app)
