@@ -62,8 +62,8 @@ pip install -r requirements.txt
 ```
 3. Run the Flask server:
    ```bash
-flask run
-```
+   flask run
+   ```
    This will start the Flask backend on http://localhost:5000.
 
 
