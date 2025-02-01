@@ -8,13 +8,18 @@ const DashboardPage = () => {
     const [expenses, setExpenses] = useState(null);
     const [savings, setSavings] = useState(null);
     const [token, setToken] = useState(localStorage.getItem('access_token'));
+    const [isEditing, setIsEditing] = useState(false); // To track if the user is editing
+    const [editProfile, setEditProfile] = useState({ full_name: '', email: '', phone_number: '' });
     const navigate = useNavigate();
 
     useEffect(() => {
         if (token) {
             // Fetch user profile
             axios.get('https://phase4-project-1twb.onrender.com/profile', { headers: { Authorization: `Bearer ${token}` } })
-                .then(res => setProfile(res.data))
+                .then(res => {
+                    setProfile(res.data);
+                    setEditProfile({ full_name: res.data.full_name, email: res.data.email, phone_number: res.data.phone_number });
+                })
                 .catch(err => console.log(err));
 
             // Fetch user financial data (income, expenses, savings)
@@ -40,7 +45,7 @@ const DashboardPage = () => {
     };
 
     const handleSetSavingsGoal = () => {
-        navigate('/saving');  // Navigate to saving goals page
+        navigate('/saving-goal');  // Navigate to saving goals page
     };
 
     const handleWithdrawSavings = () => {
@@ -76,6 +81,31 @@ const DashboardPage = () => {
         }
     };
 
+    const handleEditProfile = () => {
+        setIsEditing(true);  // Enable editing mode
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);  // Cancel editing mode and revert changes
+        setEditProfile({ full_name: profile.full_name, email: profile.email, phone_number: profile.phone_number });
+    };
+
+    const handleSaveProfile = () => {
+        // Make PUT request to update the user profile
+        axios.put('https://phase4-project-1twb.onrender.com/user/update', editProfile, { 
+            headers: { Authorization: `Bearer ${token}` }
+        })
+        .then(res => {
+            setProfile(res.data);  // Update profile with the new data
+            setIsEditing(false);  // Disable editing mode
+            alert('Profile updated successfully');
+        })
+        .catch(err => {
+            console.error('Error updating profile:', err);
+            alert('There was an issue updating your profile.');
+        });
+    };
+
     // If any data is still loading, display loading message
     if (!profile || income === null || expenses === null || savings === null) {
         return <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>Loading...</div>;
@@ -91,21 +121,50 @@ const DashboardPage = () => {
                     <div className="card shadow-sm">
                         <div className="card-body">
                             <div className="d-flex flex-column align-items-center">
-                            <img 
-                                src="https://www.w3schools.com/w3images/avatar2.png" 
-                                alt=""  // Empty alt for purely decorative images
-                                className="img-fluid rounded-circle mb-3"
-                                style={{ width: '120px', height: '120px', objectFit: 'cover' }}
-                            />
+                                <img 
+                                    src="https://www.w3schools.com/w3images/avatar2.png" 
+                                    alt=""  // Empty alt for purely decorative images
+                                    className="img-fluid rounded-circle mb-3"
+                                    style={{ width: '120px', height: '120px', objectFit: 'cover' }}
+                                />
 
                                 <h5 className="card-title text-center">{profile.full_name}</h5>
                             </div>
-                            <p className="card-text"><strong>Email:</strong> {profile.email}</p>
-                            <p className="card-text"><strong>Phone Number:</strong> {profile.phone_number}</p>
-                            <div className="d-flex justify-content-between">
-                                <button className="btn btn-warning">Edit Profile</button>
-                                <button className="btn btn-danger" onClick={handleDeleteAccount}>Delete Account</button>
-                            </div>
+                            {isEditing ? (
+                                <>
+                                    <input
+                                        type="text"
+                                        className="form-control mb-2"
+                                        value={editProfile.full_name}
+                                        onChange={(e) => setEditProfile({ ...editProfile, full_name: e.target.value })}
+                                    />
+                                    <input
+                                        type="email"
+                                        className="form-control mb-2"
+                                        value={editProfile.email}
+                                        onChange={(e) => setEditProfile({ ...editProfile, email: e.target.value })}
+                                    />
+                                    <input
+                                        type="text"
+                                        className="form-control mb-2"
+                                        value={editProfile.phone_number}
+                                        onChange={(e) => setEditProfile({ ...editProfile, phone_number: e.target.value })}
+                                    />
+                                    <div className="d-flex justify-content-between">
+                                        <button className="btn btn-success" onClick={handleSaveProfile}>Save</button>
+                                        <button className="btn btn-secondary" onClick={handleCancelEdit}>Cancel</button>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <p className="card-text"><strong>Email:</strong> {profile.email}</p>
+                                    <p className="card-text"><strong>Phone Number:</strong> {profile.phone_number}</p>
+                                    <div className="d-flex justify-content-between">
+                                        <button className="btn btn-warning" onClick={handleEditProfile}>Edit Profile</button>
+                                        <button className="btn btn-danger" onClick={handleDeleteAccount}>Delete Account</button>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
