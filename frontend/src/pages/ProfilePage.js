@@ -7,7 +7,7 @@ const ProfilePage = () => {
 
     useEffect(() => {
         if (token) {
-            axios.get('/user/profile', { headers: { Authorization: `Bearer ${token}` } })
+            axios.get('https://phase4-project-1twb.onrender.com/user/profile', { headers: { Authorization: `Bearer ${token}` } })
                 .then(res => setProfile(res.data))
                 .catch(err => console.log(err));
         }
