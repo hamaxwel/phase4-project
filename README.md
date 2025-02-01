@@ -24,6 +24,9 @@ Boda-Boda Savings is a savings app designed to help boda-boda riders manage thei
 * **Authentication**: JWT (JSON Web Tokens)
 * **Icons**: Bootstrap Icons, React Icons
 
+## Live demo
+
+
 ## Installation
 
 ### Prerequisites
