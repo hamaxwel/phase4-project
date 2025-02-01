@@ -34,19 +34,19 @@ Make sure you have Node.js and npm installed.
 
 1. Clone the repository:
    ```bash
-git clone https://github.com/your-username/boda-boda-savings.git
+    git clone https://github.com/your-username/boda-boda-savings.git
 ```
 2. Navigate into the frontend directory:
    ```bash
-cd frontend
+    cd frontend
 ```
 3. Install the dependencies:
    ```bash
-npm install
+    npm install
 ```
 4. Run the development server:
    ```bash
-npm start
+    npm start
 ```
    This will start the React app on http://localhost:3000.
 
