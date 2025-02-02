@@ -24,7 +24,10 @@ Boda-Boda Savings is a savings app designed to help boda-boda riders manage thei
 * **Authentication**: JWT (JSON Web Tokens)
 * **Icons**: Bootstrap Icons, React Icons
 
-## Live demo
+## Project Links  
+- **Demo Video:** [Watch Here](https://drive.google.com/file/d/12pDDPfRoKPMA4TTK3GP-rBvZH30uFSee/view?usp=sharing)  
+- **Frontend (Vercel):** [Visit Site](https://mybike.vercel.app/)  
+- **Backend (Render):** [API Endpoint](https://phase4-project-1twb.onrender.com)  
 
 
 ## Installation
